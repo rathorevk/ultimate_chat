@@ -1,0 +1,77 @@
+<div class="px-4 py-20 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-2xl">
+    <.link patch={~p"/rooms/new"}>
+      <button
+        phx-click="play_against_computer"
+        phx-value-player_id={@user_id}
+        class="lobby-screen__title flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs"
+      >
+        Create Chat Room
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+      </button>
+    </.link>
+  </div>
+
+  <div class="mx-auto max-w-2xl">
+    <.link patch={~p"/rooms/join"}>
+      <button
+        phx-click="play_against_real_player"
+        phx-value-player_id={@user_id}
+        class="lobby-screen__title flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs"
+      >
+        Join Chat Room
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          />
+        </svg>
+      </button>
+    </.link>
+  </div>
+</div>
+<%!-- Action modal for New Room --%>
+<.modal :if={@live_action == :new} id="room-modal" show on_cancel={JS.patch(~p"/rooms")}>
+  <.live_component
+    module={UltimateChatWeb.LiveComponent.Create}
+    id={@room.id || :new}
+    title={@page_title}
+    action={@live_action}
+    room={@room}
+    user_id={@user_id}
+    patch={~p"/rooms/new"}
+  />
+</.modal>
+
+<.modal :if={@live_action == :join} id="room-modal" show on_cancel={JS.patch(~p"/rooms")}>
+  <.live_component
+    module={UltimateChatWeb.LiveComponent.ListRoom}
+    id="join"
+    title={@page_title}
+    action={@live_action}
+    rooms={@rooms}
+    user_id={@user_id}
+    patch={~p"/rooms/join"}
+  />
+</.modal>

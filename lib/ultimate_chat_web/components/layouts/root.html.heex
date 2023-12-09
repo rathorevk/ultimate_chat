@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="[scrollbar-gutter:stable]">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" · Phoenix Framework">
+      <%= assigns[:page_title] || "UltimateChat" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+  </head>
+  <body class="bg-white antialiased">
+    <div class="header-2">
+      <nav class="bg-white py-2 md:py-4">
+        <div class="container px-4 mx-auto md:flex md:items-center">
+          <div class="flex justify-between items-center">
+            <a
+              href="https://flowbite.com/"
+              class="flex items-center space-x-3 rtl:space-x-reverse"
+            >
+              <img src={~p"/images/ultimate-chat.svg"} class="h-8" alt="ULTIMATE Logo" />
+              <span class="self-center text-2xl font-semibold text-indigo-600 whitespace-nowrap dark:text-white">
+                ULTIMATE CHAT
+              </span>
+            </a>
+
+            <button
+              class="border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden"
+              id="navbar-toggle"
+            >
+              <i class="fas fa-bars"></i>
+            </button>
+          </div>
+
+          <%= if @current_user do %>
+            <div
+              class="hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0"
+              id="navbar-collapse"
+            >
+              <a
+                href="#"
+                phx-click="back"
+                class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-transparent rounded hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-300"
+              >
+                Back
+              </a>
+              <a
+                href={~p"/logout"}
+                class="p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1"
+              >
+                Logout
+              </a>
+            </div>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+    <%= @inner_content %>
+  </body>
+</html>
