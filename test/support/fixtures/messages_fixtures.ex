@@ -8,13 +8,18 @@ defmodule UltimateChat.MessagesFixtures do
   Generate a message.
   """
   def message_fixture(attrs \\ %{}) do
+    user = UltimateChat.UsersFixtures.user_fixture()
+    room = UltimateChat.RoomsFixtures.room_fixture()
+
     {:ok, message} =
       attrs
       |> Enum.into(%{
-        text: "some text"
+        text: "sometext",
+        sender_id: user.id,
+        room_id: room.id
       })
       |> UltimateChat.Messages.create_message()
 
-    message
+    %{message | user: user}
   end
 end

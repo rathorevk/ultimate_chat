@@ -18,7 +18,7 @@ defmodule UltimateChat.Messages do
 
   """
   def list_messages do
-    Repo.all(Message)
+    Message |> preload(:user) |> Repo.all()
   end
 
   @spec list_messages_by_room(any(), any()) :: Paginator.Page.t()

@@ -4,11 +4,11 @@ defmodule UltimateChat.MessagesTest do
   alias UltimateChat.Messages
 
   describe "messages" do
-    alias UltimateChat.Messages.Message
+    alias UltimateChat.Schema.Message
 
     import UltimateChat.MessagesFixtures
 
-    @invalid_attrs %{text: nil}
+    @invalid_attrs %{text: nil, sender_id: nil, room_id: nil}
 
     test "list_messages/0 returns all messages" do
       message = message_fixture()
@@ -21,7 +21,9 @@ defmodule UltimateChat.MessagesTest do
     end
 
     test "create_message/1 with valid data creates a message" do
-      valid_attrs = %{text: "some text"}
+      user = UltimateChat.UsersFixtures.user_fixture()
+      room = UltimateChat.RoomsFixtures.room_fixture()
+      valid_attrs = %{text: "some text", sender_id: user.id, room_id: room.id}
 
       assert {:ok, %Message{} = message} = Messages.create_message(valid_attrs)
       assert message.text == "some text"

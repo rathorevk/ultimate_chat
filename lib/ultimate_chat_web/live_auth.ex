@@ -1,26 +1,12 @@
 defmodule UltimateChatWeb.LiveAuth do
-  use UltimateChatWeb, :live_view
-
   alias UltimateChat.Schema.User
   alias UltimateChat.Users
   alias UltimateChatWeb.ETS.UserAuth
 
-  require Logger
+  import Phoenix.LiveView
+  import Phoenix.Component
 
-  @impl true
-  def render(assigns) do
-    ~H"""
-    <div>
-      <%= if @current_user do %>
-        <p>Welcome, <%= @current_user.username %></p>
-        <a phx-click="logout">Logout</a>
-      <% else %>
-        <p>You are not logged in.</p>
-        <a phx-click="login">Login</a>
-      <% end %>
-    </div>
-    """
-  end
+  require Logger
 
   def on_mount(:require_authenticated_user, _, session, socket) do
     socket = assign_current_user(socket, session)
@@ -32,7 +18,7 @@ defmodule UltimateChatWeb.LiveAuth do
         {:halt,
          socket
          |> put_flash(:error, "You have to Sign in to continue")
-         |> redirect(to: ~p"/")}
+         |> redirect(to: "/")}
 
       %User{} ->
         {:cont, socket}

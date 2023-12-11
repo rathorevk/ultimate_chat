@@ -50,7 +50,8 @@ defmodule UltimateChat.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:paginator, "~> 1.2.0"}
+      {:paginator, "~> 1.2.0"},
+      {:faker, "~> 0.17.0"}
     ]
   end
 

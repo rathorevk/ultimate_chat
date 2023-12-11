@@ -17,9 +17,10 @@ defmodule UltimateChat.Application do
       # Start Finch
       {Finch, name: UltimateChat.Finch},
       # Start the Endpoint (http/https)
-      UltimateChatWeb.Endpoint
+      UltimateChatWeb.Endpoint,
       # Start a worker by calling: UltimateChat.Worker.start_link(arg)
       # {UltimateChat.Worker, arg}
+      UltimateChatWeb.Presence
     ]
 
     UltimateChatWeb.ETS.UserAuth.new()

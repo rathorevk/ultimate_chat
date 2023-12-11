@@ -1,67 +1,101 @@
-<div class="container mx-auto max-w-8xl">
-  <div class="border border-indigo-300 rounded">
-    <%!-- Room Heading --%>
-    <div class="w-full">
-      <div class="relative flex items-center p-3 border-b border-indigo-300 bg-slate-300">
-        <span class="block ml-2 font-bold text-indigo-600">
-          Room: <%= @current_room.name %>
-        </span>
+<div class="room">
+  <%!-- Navigation bar --%>
+  <div class="navbar">
+    <nav class="topnav">
+      <div class="container px-4 mx-auto md:flex md:items-center">
+        <div class="flex justify-between items-center">
+          <a href={~p"/rooms"} class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src={~p"/images/ultimate-chat.svg"} class="h-8" alt="ULTIMATE Logo" />
+            <span class="icon-text">
+              ULTIMATE CHAT
+            </span>
+          </a>
+
+          <button class="navbar-name-btn" id="navbar-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <%!-- Logout and Back btn --%>
+        <%= if @current_user do %>
+          <div class="right-navbar" id="navbar-collapse">
+            <a href="#" phx-click="back" class="back-button">
+              Back
+            </a>
+            <a href={~p"/logout"} class="logout-button">
+              Logout
+            </a>
+          </div>
+        <% end %>
       </div>
+    </nav>
+  </div>
+  <div class="container mx-auto max-w-8xl">
+    <div class="border border-indigo-300 rounded">
+      <%!-- Room Heading --%>
+      <div class="w-full">
+        <div class="relative flex items-center p-3 border-b border-indigo-300 bg-slate-300">
+          <span class="block ml-2 font-bold text-indigo-600">
+            Room: <%= @current_room.name %>
+          </span>
+        </div>
 
-      <%!-- Room Body: chat messages --%>
-      <div id="scroller" class="relative w-full p-6 overflow-y-auto h-[40rem]">
-        <ul class="space-y-2">
-          <%!-- Enable/Disable Load More button on basis of metadata --%>
-          <%= if @metadata.after do %>
-            <li class="flex justify-center">
-              <.button class="bg-indigo-500" phx-click="load_messages">Load More</.button>
-            </li>
-          <% end %>
-
-          <%!-- Reversed list of message so recent message would be on bottom  --%>
-          <%= for message <- Enum.reverse(@messages) do %>
-            <%= if message.sender_id == @user_id do %>
-              <li class="flex justify-end">
-                <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow">
-                  <span class="block"><%= message.text %></span>
-                </div>
-              </li>
-            <% else %>
-              <li class="flex justify-start">
-                <div class="flex-none flex flex-col space-y-1 mr-4 mb-4">
-                  <div class="relative max-w-xl px-4 py-2 text-gray-700 rounded shadow">
-                    <span class="block"><%= message.text %></span>
-                  </div>
-
-                  <%!-- UserID of the sender when message are from other users --%>
-                  <.link
-                    href={"/users/#{message.user.id}"}
-                    class="block text-start text-xs hover:underline"
-                  >
-                    <%= message.user.name %>
-                  </.link>
-                </div>
+        <%!-- Room Body: chat messages --%>
+        <div id="scroller" class="relative w-full p-6 overflow-y-auto h-[40rem]">
+          <ul class="space-y-2">
+            <%!-- Enable/Disable Load More button on basis of metadata --%>
+            <%= if @metadata.after do %>
+              <li class="flex justify-center">
+                <.button class="bg-indigo-500" phx-click="load_messages">Load More</.button>
               </li>
             <% end %>
-          <% end %>
-        </ul>
-      </div>
-    </div>
 
-    <%!-- Form for Input message box --%>
-    <form phx-submit="save">
-      <div class="flex items-center p-4">
-        <input
-          type="text"
-          name="message"
-          placeholder="Type your message..."
-          class="w-full rounded-lg border border-indigo-300 px-4 py-2"
-          required
-        />
-        <button class="ml-2 rounded-lg bg-indigo-500 text-sm font-semibold px-4 py-2 text-white hover:bg-green-400">
-          Send
-        </button>
+            <%!-- Reversed list of message so recent message would be on bottom  --%>
+            <%= for message <- Enum.reverse(@messages) do %>
+              <%= if message.sender_id == @user_id do %>
+                <li class="flex justify-end">
+                  <div class="relative max-w-xl px-4 py-2 text-gray-700 bg-gray-100 rounded shadow">
+                    <span class="block"><%= message.text %></span>
+                  </div>
+                </li>
+              <% else %>
+                <li class="flex justify-start">
+                  <div class="flex-none flex flex-col space-y-1 mr-4 mb-4">
+                    <div class="relative max-w-xl px-4 py-2 text-gray-700 rounded shadow">
+                      <span class="block"><%= message.text %></span>
+                    </div>
+
+                    <%!-- UserID of the sender when message are from other users --%>
+                    <.link
+                      href={"/users/#{message.user.id}"}
+                      class="block text-start text-xs hover:underline"
+                    >
+                      <%= message.user.name %>
+                    </.link>
+                  </div>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
       </div>
-    </form>
+
+      <%!-- Input message form --%>
+      <form phx-submit="save" phx-change="change">
+        <div class="flex items-center p-4">
+          <input
+            type="text"
+            name="text"
+            value={@text_value}
+            placeholder="Type your message..."
+            class="w-full rounded-lg border border-indigo-300 px-4 py-2"
+            required
+          />
+          <button class="ml-2 rounded-lg bg-indigo-500 text-sm font-semibold px-4 py-2 text-white hover:bg-green-400">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

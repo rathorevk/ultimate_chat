@@ -4,7 +4,7 @@ defmodule UltimateChat.UsersTest do
   alias UltimateChat.Users
 
   describe "users" do
-    alias UltimateChat.Users.User
+    alias UltimateChat.Schema.User
 
     import UltimateChat.UsersFixtures
 
@@ -21,10 +21,10 @@ defmodule UltimateChat.UsersTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{name: "some name"}
+      valid_attrs = %{name: "somename"}
 
       assert {:ok, %User{} = user} = Users.create_user(valid_attrs)
-      assert user.name == "some name"
+      assert user.name == "somename"
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -33,10 +33,10 @@ defmodule UltimateChat.UsersTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{name: "some updated name"}
+      update_attrs = %{name: "marcos47"}
 
       assert {:ok, %User{} = user} = Users.update_user(user, update_attrs)
-      assert user.name == "some updated name"
+      assert user.name == "marcos47"
     end
 
     test "update_user/2 with invalid data returns error changeset" do

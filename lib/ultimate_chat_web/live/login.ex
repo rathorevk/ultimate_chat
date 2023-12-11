@@ -12,8 +12,9 @@ defmodule UltimateChatWeb.Live.Login do
   def mount(_params, %{"user_id" => user_id, "session_uuid" => session_uuid} = session, socket) do
     Logger.info("Login with user_id: #{inspect(session)}")
     insert_session_token(session_uuid, user_id)
-    {:ok, push_redirect(socket, to: "/rooms", replace: true)}
-    # {:ok, assign(socket, form: to_form(Users.change_user(%User{})), current_user: nil)}
+    current_user = Users.get_user!(user_id)
+
+    {:ok, socket |> assign(:current_user, current_user) |> redirect(to: "/rooms")}
   end
 
   def mount(_params, %{"session_uuid" => session_uuid} = session, socket) do
@@ -30,6 +31,7 @@ defmodule UltimateChatWeb.Live.Login do
   @impl true
   def handle_event("validate", %{"user" => params}, socket) do
     Logger.info("Login validate: #{inspect(params)}")
+
     form =
       %User{}
       |> Users.change_user(params)
@@ -52,7 +54,7 @@ defmodule UltimateChatWeb.Live.Login do
             {:noreply,
              socket
              |> put_flash(:info, "User created successfully!")
-             |> push_navigate(to: ~p"/rooms")}
+             |> redirect(to: ~p"/rooms")}
 
           {:error, %Ecto.Changeset{} = changeset} ->
             {:noreply, assign(socket, form: to_form(changeset))}

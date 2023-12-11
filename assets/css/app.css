@@ -3,68 +3,47 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
-.rotate-45 {
-    --transform-rotate: 45deg;
-    transform: rotate(45deg);
+.navbar .topnav {
+  @apply bg-white py-2 md:py-4
 }
 
-.group:hover .group-hover\:flex {
-    display: flex;
+.navbar .topnav .icon-text {
+  @apply self-center text-2xl font-semibold text-indigo-600 whitespace-nowrap dark:text-white
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-  }
-  
-  .topnav {
-    overflow: hidden;
-    background-color: #e9e9e9;
-  }
-  
-  .topnav a {
-    float: left;
-    display: block;
-    color: black;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-size: 17px;
-  }
-  
-  .topnav a:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
-  .topnav a.active {
-    background-color: #2196F3;
-    color: white;
-  }
-  
-  .topnav .search-container {
-    float: right;
-  }
-  
-  .topnav input[type=text] {
-    padding: 6px;
-    margin-top: 8px;
-    font-size: 17px;
-    border: none;
-  }
-  
-  .topnav .search-container button {
-    float: right;
-    padding: 6px;
-    margin-top: 8px;
-    margin-right: 16px;
-    background: #ddd;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .topnav .search-container button:hover {
-    background: #ccc;
-  }
-  
+.navbar-name-btn {
+  @apply border border-solid border-gray-600 px-3 py-1 rounded text-gray-600 opacity-50 hover:opacity-75 md:hidden
+}
+
+.right-navbar {
+  @apply hidden md:flex flex-col md:flex-row md:ml-auto mt-3 md:mt-0
+}
+
+.right-navbar .back-button {
+  @apply p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-transparent rounded hover:bg-indigo-100 hover:text-indigo-700 transition-colors duration-300
+}
+
+
+.right-navbar .logout-button {
+  @apply p-2 lg:px-4 md:mx-2 text-indigo-600 text-center border border-solid border-indigo-600 rounded hover:bg-indigo-600 hover:text-white transition-colors duration-300 mt-1 md:mt-0 md:ml-1
+}
+
+.login-form {
+  @apply bg-indigo-400 dark:bg-gray-800 h-screen overflow-hidden flex items-center justify-center
+}
+
+.login-form .login-btn {
+  @apply bg-indigo-400 font-medium p-2 md:p-4 text-white uppercase w-full rounded hover:bg-green-400
+}
+
+.create-room-btn {
+  @apply flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs
+}
+
+.join-room-btn {
+  @apply flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs
+}
+
+.status {
+  @apply sm:px-6 border-b border-gray-200 px-1 py-2 text-xs rounded-full items-center bg-green-200 font-semibold text-green-900
+}

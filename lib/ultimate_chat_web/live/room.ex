@@ -7,6 +7,7 @@ defmodule UltimateChatWeb.Live.Room do
   alias UltimateChat.Schema.Message
   alias UltimateChat.Messages
   alias UltimateChat.Rooms
+  alias UltimateChat.Users
 
   require Logger
 
@@ -15,6 +16,7 @@ defmodule UltimateChatWeb.Live.Room do
     Logger.info("User: #{user_id} in chat room: #{room_id}")
     room_id = String.to_integer(room_id)
 
+    current_user = Users.get_user!(user_id)
     current_room = Rooms.get_room!(room_id)
 
     if connected?(socket) do
@@ -32,17 +34,23 @@ defmodule UltimateChatWeb.Live.Room do
 
     {:ok,
      socket
-     |> assign(:current_user, user_id)
+     |> assign(:current_user, current_user)
      |> assign(:user_id, user_id)
      |> assign(:current_room, current_room)
      |> assign(:message_struct, message)
      |> assign(:form, message_form)
      |> assign(:messages, entries)
-     |> assign(:metadata, metadata)}
+     |> assign(:metadata, metadata)
+     |> assign(:text_value, nil)}
   end
 
   @impl true
-  def handle_event("save", %{"message" => message_text}, socket) do
+  def handle_event("change", %{"text" => value}, socket) do
+    socket = assign(socket, :text_value, value)
+    {:noreply, socket}
+  end
+
+  def handle_event("save", %{"text" => message_text}, socket) do
     Logger.info("Save message: #{inspect(message_text)}")
 
     case Messages.create_message(socket.assigns.message_struct, %{text: message_text}) do
@@ -50,7 +58,7 @@ defmodule UltimateChatWeb.Live.Room do
         message = Messages.get_message!(new_message.id)
         PubSub.broadcast_message_update(socket.assigns.current_room.id, {:new_message, message})
 
-        {:noreply, socket |> put_flash(:info, "Message sent!")}
+        {:noreply, socket |> assign(:text_value, nil) |> put_flash(:info, "Message sent!")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}

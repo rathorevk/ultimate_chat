@@ -1,54 +1,110 @@
-<div class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.link patch={~p"/rooms/new"}>
-      <button
-        phx-click="play_against_computer"
-        phx-value-player_id={@user_id}
-        class="lobby-screen__title flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs"
-      >
-        Create Chat Room
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
-      </button>
-    </.link>
+<div class="index">
+  <%!-- Navigation bar --%>
+  <div class="navbar">
+    <nav class="topnav">
+      <div class="container px-4 mx-auto md:flex md:items-center">
+        <div class="flex justify-between items-center">
+          <a href={~p"/rooms"} class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src={~p"/images/ultimate-chat.svg"} class="h-8" alt="ULTIMATE Logo" />
+            <span class="icon-text">
+              ULTIMATE CHAT
+            </span>
+          </a>
+
+          <button class="navbar-name-btn" id="navbar-toggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <%!-- Logout and Back btn --%>
+        <%= if @current_user do %>
+          <div class="right-navbar" id="navbar-collapse">
+            <a href="#" phx-click="back" class="back-button">
+              Back
+            </a>
+            <a href={~p"/logout"} class="logout-button">
+              Logout
+            </a>
+          </div>
+        <% end %>
+      </div>
+    </nav>
   </div>
 
-  <div class="mx-auto max-w-2xl">
-    <.link patch={~p"/rooms/join"}>
-      <button
-        phx-click="play_against_real_player"
-        phx-value-player_id={@user_id}
-        class="lobby-screen__title flex place-content-between self-center text-center bg-indigo-500 hover:bg-green-400 text-white font-bold p-4 rounded-xl mb-10 transition duration-300 w-full max-w-xs"
-      >
-        Join Chat Room
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-          />
-        </svg>
-      </button>
-    </.link>
+  <%!-- Page with Create Room and Join Room Btn --%>
+  <div class="px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl">
+      <.link patch={~p"/rooms/new"}>
+        <button class="create-room-btn">
+          Create Chat Room
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              fill="#FFFFFF"
+            />
+          </svg>
+        </button>
+      </.link>
+    </div>
+
+    <div class="mx-auto max-w-2xl">
+      <.link patch={~p"/rooms/join"}>
+        <button class="join-room-btn">
+          Join Chat Room
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+        </button>
+      </.link>
+
+      <%!-- Active Users update using persence and stream --%>
+      <div class="mx-auto  md:7/12 ">
+        <div class="flex items-center justify-between pb-6">
+          <div>
+            <h2 class="font-semibold text-indigo-600">Active Users</h2>
+          </div>
+        </div>
+        <div class="overflow-y-hidden rounded-lg border">
+          <div class="overflow-x-auto">
+            <div class="overflow-y-hidden rounded-lg border">
+              <div class="overflow-x-auto">
+                <.table id="presences" rows={@streams.presences}>
+                  <:col :let={{_id, %{id: id, metas: _metas}}} label="ID"><%= id %></:col>
+                  <:col :let={{_id, %{user: user, metas: _metas}}} label="USERNAME">
+                    @<%= user.name %>
+                  </:col>
+                  <:col :let={{_id, _presence}} label="STATUS">
+                    <span class="status">
+                      active
+                    </span>
+                  </:col>
+                </.table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <%!-- Action modal for New Room --%>

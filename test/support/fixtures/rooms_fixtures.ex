@@ -8,10 +8,13 @@ defmodule UltimateChat.RoomsFixtures do
   Generate a room.
   """
   def room_fixture(attrs \\ %{}) do
+    user = UltimateChat.UsersFixtures.user_fixture()
+
     {:ok, room} =
       attrs
       |> Enum.into(%{
-        name: "some name"
+        name: "some name",
+        creator_id: user.id
       })
       |> UltimateChat.Rooms.create_room()
 

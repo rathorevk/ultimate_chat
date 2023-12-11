@@ -9,8 +9,8 @@ defmodule UltimateChatWeb.LiveComponent.ListRoom do
         <ul class="divide-y-2 divide-gray-100">
           <%= for room <- assigns.rooms do %>
             <li class="w-full p-3 hover:bg-indigo-300  hover:rounded">
-              <span class="text-lg font-semibold mr-4">Room <%= room.id %>.</span>
               <.link href={~p"/room/#{room.id}"}>
+                <span class="text-lg font-semibold mr-4">Room <%= room.id %>.</span>
                 <span class="font-semibold"><%= room.name %></span>
               </.link>
             </li>
