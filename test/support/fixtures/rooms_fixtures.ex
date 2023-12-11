@@ -13,7 +13,7 @@ defmodule UltimateChat.RoomsFixtures do
     {:ok, room} =
       attrs
       |> Enum.into(%{
-        name: "some name",
+        name: Faker.Team.name(),
         creator_id: user.id
       })
       |> UltimateChat.Rooms.create_room()

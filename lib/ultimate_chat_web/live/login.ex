@@ -11,10 +11,20 @@ defmodule UltimateChatWeb.Live.Login do
   @impl true
   def mount(_params, %{"user_id" => user_id, "session_uuid" => session_uuid} = session, socket) do
     Logger.info("Login with user_id: #{inspect(session)}")
-    insert_session_token(session_uuid, user_id)
-    current_user = Users.get_user!(user_id)
 
-    {:ok, socket |> assign(:current_user, current_user) |> redirect(to: "/rooms")}
+    case Users.fetch_user(user_id) do
+      nil ->
+        {:ok,
+         socket
+         |> assign(:form, to_form(Users.change_user(%User{})))
+         |> assign(:session_uuid, session_uuid)
+         |> assign(:current_user, nil)}
+
+      current_user ->
+        insert_session_token(session_uuid, user_id)
+
+        {:ok, socket |> assign(:current_user, current_user) |> redirect(to: "/rooms")}
+    end
   end
 
   def mount(_params, %{"session_uuid" => session_uuid} = session, socket) do

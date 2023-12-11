@@ -21,13 +21,21 @@ defmodule UltimateChat.Messages do
     Message |> preload(:user) |> Repo.all()
   end
 
-  @spec list_messages_by_room(any(), any()) :: Paginator.Page.t()
+  @doc """
+  Returns the paginated list of messages.
+
+  ## Examples
+
+      iex> list_messages_by_room(123)
+      %Paginator.Page{entries: [%Message{}, ...], metadata: %Paginator.Page.Metadata{after: "bac321..", before: nil, ...}
+
+  """
   def list_messages_by_room(room_id, metadata \\ []) do
     Message
     |> where(room_id: ^room_id)
-    |> order_by(desc: :inserted_at)
+    |> order_by(desc: :inserted_at, desc: :id)
     |> preload(:user)
-    |> Repo.paginate([cursor_fields: [inserted_at: :desc]] ++ metadata)
+    |> Repo.paginate([cursor_fields: [inserted_at: :desc, id: :desc]] ++ metadata)
   end
 
   @doc """

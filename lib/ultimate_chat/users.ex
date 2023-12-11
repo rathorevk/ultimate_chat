@@ -37,6 +37,32 @@ defmodule UltimateChat.Users do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  @doc """
+  Fetch a single user.
+
+  ## Examples
+
+      iex> fetch_user(123)
+      nil
+
+      iex> fetch_user(124)
+      %User{}
+
+  """
+  def fetch_user(id), do: Repo.get(User, id)
+
+  @doc """
+  Gets a single user by username.
+
+  ## Examples
+
+      iex> get_by_username("rathorevk")
+      nil
+
+      iex> get_by_username("abc")
+      %User{}
+
+  """
   def get_by_username(name), do: Repo.get_by(User, name: name)
 
   @doc """
