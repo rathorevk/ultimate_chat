@@ -11,7 +11,7 @@ defmodule UltimateChat.UsersFixtures do
     {:ok, user} =
       attrs
       |> Enum.into(%{
-        name: Faker.Person.first_name()
+        name: Faker.Person.En.first_name()
       })
       |> UltimateChat.Users.create_user()
 

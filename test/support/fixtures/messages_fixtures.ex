@@ -14,7 +14,7 @@ defmodule UltimateChat.MessagesFixtures do
     {:ok, message} =
       attrs
       |> Enum.into(%{
-        text: "sometext",
+        text: Faker.StarWars.quote(),
         sender_id: user.id,
         room_id: room.id
       })

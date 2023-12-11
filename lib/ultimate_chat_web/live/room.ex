@@ -41,7 +41,9 @@ defmodule UltimateChatWeb.Live.Room do
      |> assign(:form, message_form)
      |> assign(:messages, entries)
      |> assign(:metadata, metadata)
-     |> assign(:text_value, nil)}
+     |> assign(:text_value, nil)
+     |> put_flash(:info, "Welcome to Room: #{current_room.name}")
+    }
   end
 
   @impl true

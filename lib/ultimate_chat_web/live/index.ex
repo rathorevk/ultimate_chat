@@ -61,7 +61,7 @@ defmodule UltimateChatWeb.Live.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Lobby")
+    |> assign(:page_title, "Index")
     |> assign(:room, nil)
   end
 
